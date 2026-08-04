@@ -1,11 +1,8 @@
-import {useRef} from 'react';
 import { useState } from 'react'
 
 
 function TodoForm({onAddTodo}) {
     const [workingTodoTitle, setWorkingTodoTitle] = useState("")
-
-    const inputRef=useRef();
 
     const handleAddTodo = (event) => {event.preventDefault();
 
@@ -13,8 +10,6 @@ function TodoForm({onAddTodo}) {
     if (todoTitle && todoTitle !== "") {
       onAddTodo(todoTitle);
       setWorkingTodoTitle("");
-      inputRef.current.focus();
-
     }
 
 };
@@ -22,7 +17,6 @@ function TodoForm({onAddTodo}) {
         <form onSubmit={handleAddTodo}>
             <label htmlFor="todoTitle">Todo</label>
             <input
-            ref={inputRef}
             type="text"
             id="todoTitle"
             name="todoTitle"
