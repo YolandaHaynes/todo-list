@@ -5,7 +5,20 @@ import { useState } from 'react'
 
  
 function App() {
-  const [todoList, setTodoList] = useState([])
+  const [todoList, setTodoList] = useState([]);
+
+  const updateTodo = (editedTodo) => {
+  const updatedTodos = todoList.map((todo) => {
+    if (todo.id === editedTodo.id) 
+      {
+        return { ...editedTodo };
+      } else {
+        return todo;
+      }
+    });
+
+  setTodoList(updatedTodos);
+  };
 
   function addTodo(todoTitle){
     const newTodo = {
@@ -25,7 +38,7 @@ function App() {
     <div>
       <h1>Todo List</h1>
       <TodoForm onAddTodo={addTodo }/>
-      <TodoList todoList={todoList} onCompleteTodo={completeTodo}/>
+      <TodoList todoList={todoList} onCompleteTodo={completeTodo} onUpdateTodo={updateTodo}/>
     </div>
   );
 }
