@@ -7,6 +7,7 @@ function TodoForm({ onAddTodo }) {
 
   const todoTitleRef = useRef(null);
 
+
   const handleAddTodo = (event) => {
     event.preventDefault();
 
