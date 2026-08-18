@@ -41,7 +41,7 @@
         previous.map((todo) => (todo.id === editedTodo.id ? originalTodo : todo))
       );
 
-      setError(`Error: ${error.message}`);
+    setError(`Error: ${error.message}`);
     }
   }
 
@@ -81,9 +81,9 @@
 
     } catch (error){
       setTodoList((previous)=>
-        previous.filter((todo) => (todo.id === newTodo.id ? data : todo ))
+        previous.filter((todo) => (todo.id !== newTodo.id ))
     );
-    setError(`Error: ${error.message}`)
+    setError(`Error: ${error.message}`);
     } 
   }
 
@@ -114,7 +114,7 @@
         previous.map((todo) => (todo.id === id ? originalTodo : todo))
       );
 
-      setError(`Error: ${error.message}`);
+    setError(`Error: ${error.message}`);
     }
   }
 
