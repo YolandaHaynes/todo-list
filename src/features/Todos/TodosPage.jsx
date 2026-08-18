@@ -178,7 +178,7 @@
           <button onClick={() => setError("")}>Clear Error</button>
         </div>
       )}
-      {isTodoListLoading && <p>Loading</p>}
+      {isTodoListLoading && <p>Loading todos.....</p>}
       <TodoForm onAddTodo={addTodo }/>
       <TodoList todoList={todoList} onCompleteTodo={completeTodo} onUpdateTodo={updateTodo}/>
     </div>
