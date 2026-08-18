@@ -15,6 +15,10 @@
     
     const originalTodo = todoList.find((todo) => todo.id === editedTodo.id);
 
+    if (!originalTodo) {
+      return;
+    }
+
     setTodoList((previous) => previous.map((todo) => (todo.id === editedTodo.id ? editedTodo : todo))
       );
 
@@ -97,6 +101,9 @@
 
     const originalTodo = todoList.find((todo) => todo.id === id);
 
+    if (!originalTodo) {
+      return;
+    }
     setTodoList(previous => previous.map(todo=> todo.id === id ? {...todo, isCompleted:true} : todo))
     try {
       const response = await fetch(`/api/tasks/${id}`, {
