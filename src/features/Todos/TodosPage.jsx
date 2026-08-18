@@ -3,49 +3,54 @@
  import TodoList from './TodoList/TodoList'
 
  
-  function TodosPage({ token }){
-  
+ function TodosPage({ token }){
+
   const [todoList, setTodoList] = useState([]);
   const [error, setError] = useState("")
   const [isTodoListLoading, setIsTodoListLoading] = useState(false)
 
   async function updateTodo (editedTodo) {
-  const originalTodo = todoList.find((todo) => todo.id === editedTodo.id);
 
-  setTodoList((previous) => previous.map((todo) => (todo.id === editedTodo.id ? editedTodo : todo))
-    );
+    setError("")
+    
+    const originalTodo = todoList.find((todo) => todo.id === editedTodo.id);
 
-    try {
-      const response = await fetch(`/api/tasks/${editedTodo.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': token,
-        },
-        credentials: 'include',
-        body: JSON.stringify({ 
-          title: editedTodo.title,
-          isCompleted: editedTodo.isCompleted
-         }),
-      });
-
-      if (response.status === 401) {
-        throw new Error ('unauthorized');
-      }
-
-      if (!response.ok) {
-        throw new Error('Failed to update todo');
-      }
-    } catch (error) {
-      setTodoList((previous) =>
-        previous.map((todo) => (todo.id === editedTodo.id ? originalTodo : todo))
+    setTodoList((previous) => previous.map((todo) => (todo.id === editedTodo.id ? editedTodo : todo))
       );
 
-    setError(`Error: ${error.message}`);
-    }
+      try {
+        const response = await fetch(`/api/tasks/${editedTodo.id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': token,
+          },
+          credentials: 'include',
+          body: JSON.stringify({ 
+            title: editedTodo.title,
+            isCompleted: editedTodo.isCompleted
+          }),
+        });
+
+        if (response.status === 401) {
+          throw new Error ('unauthorized');
+        }
+
+        if (!response.ok) {
+          throw new Error('Failed to update todo');
+        }
+      } catch (error) {
+        setTodoList((previous) =>
+          previous.map((todo) => (todo.id === editedTodo.id ? originalTodo : todo))
+        );
+
+      setError(`Error: ${error.message}`);
+      }
   }
 
   async function addTodo(todoTitle){
+    setError("")
+
     const newTodo = {
       id: Date.now(),
       title: todoTitle,
@@ -81,13 +86,15 @@
 
     } catch (error){
       setTodoList((previous)=>
-        previous.filter((todo) => (todo.id !== newTodo.id ))
+        previous.filter( todo => todo.id !== newTodo.id )
     );
     setError(`Error: ${error.message}`);
     } 
   }
 
   async function completeTodo (id){
+    setError("")
+
     const originalTodo = todoList.find((todo) => todo.id === id);
 
     setTodoList(previous => previous.map(todo=> todo.id === id ? {...todo, isCompleted:true} : todo))
@@ -120,6 +127,8 @@
 
   useEffect(() => {
     async function fetchTodos(){
+
+      setError("")
 
       setIsTodoListLoading(true)
       

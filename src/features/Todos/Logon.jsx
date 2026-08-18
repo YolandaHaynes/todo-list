@@ -61,7 +61,7 @@ function Logon ({
             />
             
             <button type="submit" disabled={isLoggingOn}>
-                {isLoggingOn ? "Logging in .. " : "Log On"}
+                {isLoggingOn ? "Logging in..." : "Log On"}
             </button>
       </form>
     );
