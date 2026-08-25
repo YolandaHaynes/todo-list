@@ -3,6 +3,7 @@
  import TodoList from './TodoList/TodoList'
  import SortBy from '../../shared/SortBy'
  import useDebounce from '../../utils/useDebounce';
+ import FilterInput from '../../shared/FilterInput';
  
  function TodosPage({ token }){
 
@@ -14,6 +15,9 @@
   const [filterTerm, setFilterTerm] = useState('');
   const debouncedFilterTerm = useDebounce(filterTerm, 300);
   const [dataVersion, setDataVersion] = useState(0)
+  const [filterError, setFilterError] = useState("")
+
+
 
   const handleFilterChange = (newTerm) => { setFilterTerm(newTerm);};
 
@@ -187,9 +191,14 @@
           
         const data = await response.json()
         setTodoList(data.tasks);
+        setFilterError('');
         
       } catch(error){
-        setError(`Error: ${error.message}`);
+        if (debouncedFilterTerm || sortBy !== 'createdAt' || sortDirection !== 'desc') {
+          setFilterError(`Error filtering/sorting todos: ${error.message}`);
+        } else { 
+          setError(`Error fetching todos: ${error.message}`);
+        }
       } finally{
           setIsTodoListLoading(false)
       }
@@ -208,11 +217,18 @@
           <button onClick={() => setError("")}>Clear Error</button>
         </div>
       )}
+      {filterError && (
+          <div>
+            <p>{filterError}</p>
+            <button onClick={() => setFilterError('')}>Clear Filter Error</button>
+            <button onClick={() => { setFilterTerm(''); setSortBy('createdAt'); setSortDirection('desc'); setFilterError('');}}>Reset Filters</button>
+          </div>
+        )}
       {isTodoListLoading && <p>Loading todos.....</p>}
       <SortBy sortBy={sortBy} sortDirection={sortDirection} onSortByChange={setSortBy} onSortDirectionChange={setSortDirection}/>
       <FilterInput filterTerm={filterTerm} onFilterChange={handleFilterChange}/>
       <TodoForm onAddTodo={addTodo }/>
-      <TodoList todoList={todoList} onCompleteTodo={completeTodo} onUpdateTodo={updateTodo}/>
+      <TodoList todoList={todoList} onCompleteTodo={completeTodo} onUpdateTodo={updateTodo} dataVersion={dataVersion}/>
     </div>
   )
 }
