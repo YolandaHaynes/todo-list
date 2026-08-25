@@ -1,13 +1,26 @@
- import {useState, useEffect } from 'react';
+ import {useState, useEffect, useCallback } from 'react';
  import TodoForm from './TodoForm'
  import TodoList from './TodoList/TodoList'
-
+ import SortBy from '../../shared/SortBy'
+ import useDebounce from '../../utils/useDebounce';
  
  function TodosPage({ token }){
 
   const [todoList, setTodoList] = useState([]);
-  const [error, setError] = useState("")
-  const [isTodoListLoading, setIsTodoListLoading] = useState(false)
+  const [error, setError] = useState("");
+  const [isTodoListLoading, setIsTodoListLoading] = useState(false);
+  const [sortBy, setSortBy] = useState('createdAt');
+  const [sortDirection, setSortDirection] = useState('desc');
+  const [filterTerm, setFilterTerm] = useState('');
+  const debouncedFilterTerm = useDebounce(filterTerm, 300);
+  const [dataVersion, setDataVersion] = useState(0)
+
+  const handleFilterChange = (newTerm) => { setFilterTerm(newTerm);};
+
+  const invalidateCache = useCallback(() =>{
+      setDataVersion(prev => prev + 1);
+      console.log("Invalidating memo cache after todo mutation")
+  },[]);
 
   async function updateTodo (editedTodo) {
 
@@ -43,6 +56,9 @@
         if (!response.ok) {
           throw new Error('Failed to update todo');
         }
+        
+        invalidateCache();
+
       } catch (error) {
         setTodoList((previous) =>
           previous.map((todo) => (todo.id === editedTodo.id ? originalTodo : todo))
@@ -88,6 +104,8 @@
       setTodoList((previous)=>
         previous.map((todo) => (todo.id === newTodo.id ? data : todo )));
 
+      invalidateCache();
+
     } catch (error){
       setTodoList((previous)=>
         previous.filter( todo => todo.id !== newTodo.id )
@@ -123,6 +141,9 @@
       if (!response.ok) {
         throw new Error('Failed to complete todo');
       }
+      
+      invalidateCache();
+      
     } catch (error) {
       setTodoList((previous) =>
         previous.map((todo) => (todo.id === id ? originalTodo : todo))
@@ -138,39 +159,48 @@
       setError("")
 
       setIsTodoListLoading(true)
-      
-      const params = new URLSearchParams({limit: 100});
 
-        try{
-          const response = await fetch(`/api/tasks?${params}`, {
-            headers: {
-              'X-CSRF-TOKEN': token,
-            },
-              credentials: 'include',
-            });
+      const paramsObject = {
+        sortBy,
+        sortDirection,
+        limit: 100
+      };
+      if (debouncedFilterTerm){
+        paramsObject.find = debouncedFilterTerm;
+      }
+      const params = new URLSearchParams(paramsObject);
 
-          if (response.status === 401) {
-            throw new Error ("unauthorized");
-          } 
-          if (!response.ok){
-            throw new Error('Failed to fetch todos');
-          }
-          
-          const data = await response.json()
-          setTodoList(data.tasks);
-        
-        } catch(error){
-          setError(`Error: ${error.message}`);
-        } finally{
-          setIsTodoListLoading(false)
+      try{
+        const response = await fetch(`/api/tasks?${params}`, {
+          headers: {
+            'X-CSRF-TOKEN': token,
+          },
+            credentials: 'include',
+          });
+
+        if (response.status === 401) {
+          throw new Error ("unauthorized");
+        } 
+        if (!response.ok){
+          throw new Error('Failed to fetch todos');
         }
+          
+        const data = await response.json()
+        setTodoList(data.tasks);
+        
+      } catch(error){
+        setError(`Error: ${error.message}`);
+      } finally{
+          setIsTodoListLoading(false)
       }
-      if(token){
-        fetchTodos()
-      }
-    }, [token]);
+    }
+    if(token){
+      fetchTodos()
+    }
+  }, [token, sortBy, sortDirection, debouncedFilterTerm]);
 
-      return (
+
+    return (
     <div>
       {error && (
         <div>
@@ -179,6 +209,8 @@
         </div>
       )}
       {isTodoListLoading && <p>Loading todos.....</p>}
+      <SortBy sortBy={sortBy} sortDirection={sortDirection} onSortByChange={setSortBy} onSortDirectionChange={setSortDirection}/>
+      <FilterInput filterTerm={filterTerm} onFilterChange={handleFilterChange}/>
       <TodoForm onAddTodo={addTodo }/>
       <TodoList todoList={todoList} onCompleteTodo={completeTodo} onUpdateTodo={updateTodo}/>
     </div>
