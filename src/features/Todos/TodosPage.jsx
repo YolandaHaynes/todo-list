@@ -23,7 +23,6 @@
 
   const invalidateCache = useCallback(() =>{
       setDataVersion(prev => prev + 1);
-      console.log("Invalidating memo cache after todo mutation")
   },[]);
 
   async function updateTodo (editedTodo) {
