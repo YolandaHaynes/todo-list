@@ -21,6 +21,11 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
       setWorkingTitle(event.target.value);
     };
 
+  const handleStartEditing = () => {
+    setWorkingTitle(todo.title);
+    setIsEditing(true);
+  };
+
   const handleUpdate = (event) => {
     if (!isEditing) return;
     event.preventDefault();
@@ -49,7 +54,7 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
                 onChange={()=> onCompleteTodo(todo.id)}
               />
            </label>
-           <span onClick={() => setIsEditing(true)}> {todo.title} </span>
+           <span onClick={() => {handleStartEditing}}> {todo.title} </span>
           </>
         )}
       </form>
