@@ -72,6 +72,8 @@ export function todoReducer (state, action){
                     todo.id === action.payload.tempId ? action.payload.todo : todo
                 ),
                 dataVersion: state.dataVersion + 1,
+                error: "",
+                filterError: "",
             };
         case TODO_ACTIONS.ADD_TODO_ERROR:
             return {
@@ -93,6 +95,8 @@ export function todoReducer (state, action){
             return {
                 ...state,
                 dataVersion: state.dataVersion + 1,
+                error: "",
+                filterError: "",
             };
         case TODO_ACTIONS.COMPLETE_TODO_ERROR:
             return {
@@ -116,6 +120,8 @@ export function todoReducer (state, action){
             return {
                 ...state,
                 dataVersion: state.dataVersion + 1,
+                error: "",
+                filterError: "",
             };
         case TODO_ACTIONS.UPDATE_TODO_ERROR:
             return {
@@ -131,11 +137,14 @@ export function todoReducer (state, action){
                 ...state,
                 sortBy: action.payload.sortBy,
                 sortDirection: action.payload.sortDirection,
+                error: "",
+                filterError: "",
             };
         case TODO_ACTIONS.SET_FILTER:
             return {
                 ...state,
                 filterTerm: action.payload.filterTerm,
+                error: "",
                 filterError: "",
             };
         case TODO_ACTIONS.CLEAR_ERROR:
