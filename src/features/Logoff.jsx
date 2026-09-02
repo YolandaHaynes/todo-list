@@ -12,11 +12,14 @@ function Logoff() {
     setLogoutError('');
     setIsLoggingOff(true);
 
-    const result = await logout();
-
+    try{
+      const result = await logout();
     if (!result.success) {
         setLogoutError(result.error);
-      }
+    }
+    } catch (error) {
+      setLogoutError('An unexpected error occurred during logout.');
+    } finally {
       setIsLoggingOff(false);
     }
 
@@ -33,6 +36,7 @@ function Logoff() {
       </button>
     </div>
   );
+}
 }
 
 export default Logoff;

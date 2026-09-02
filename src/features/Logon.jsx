@@ -20,13 +20,17 @@ function Logon (){
         
         setIsLoggingOn(true);
 
-        const result= await login(email,password);
-
-        if(!result.success){
+        try {
+          const result= await login(email,password);  
+          if(!result.success){
             setAuthError(result.error);
-        }
+          }
+        } catch (error) {
+            setAuthError("An unexpected error occurred during login.");
+        } finally { 
             setIsLoggingOn(false);
         }
+    }
 
     return (
         <form onSubmit={handleSubmit}>
@@ -54,8 +58,6 @@ function Logon (){
             </button>
       </form>
     );
-
-
 }
 
 export default Logon;

@@ -30,7 +30,6 @@ export const initialTodoState = {
     sortBy: 'createdAt',
     sortDirection: 'asc',
     filterTerm: '',
-    dataVersion: 0,
     filterError: "",
   }
 
@@ -63,6 +62,7 @@ export function todoReducer (state, action){
                 ...state,
                 todoList: [action.payload, ...state.todoList],
                 error: "",
+                filterError: "",
             };
         case TODO_ACTIONS.ADD_TODO_SUCCESS:
             return {
@@ -70,13 +70,13 @@ export function todoReducer (state, action){
                 todoList: state.todoList.map((todo) =>
                     todo.id === action.payload.tempId ? action.payload.todo : todo
                 ),
-                dataVersion: state.dataVersion + 1,
             };
         case TODO_ACTIONS.ADD_TODO_ERROR:
             return {
                 ...state,
                 todoList: state.todoList.filter((todo) => todo.id !== action.payload.id),
                 error: action.payload.error,
+                filterError: state.filterError,
             };
         case TODO_ACTIONS.COMPLETE_TODO_START:
             return {
@@ -85,11 +85,11 @@ export function todoReducer (state, action){
                     todo.id === action.payload.id ? { ...todo, isCompleted: true } : todo
                 ),
                 error: "",
+                filterError: "",
             };
         case TODO_ACTIONS.COMPLETE_TODO_SUCCESS:
             return {
                 ...state,
-                dataVersion: state.dataVersion + 1,
             };
         case TODO_ACTIONS.COMPLETE_TODO_ERROR:
             return {
@@ -106,11 +106,11 @@ export function todoReducer (state, action){
                     todo.id === action.payload.id ? {...todo, title:action.payload.title} : todo
                 ),
                 error: "",
+                filterError: "",
             };
         case TODO_ACTIONS.UPDATE_TODO_SUCCESS:
             return {
                 ...state,
-                dataVersion: state.dataVersion + 1,
             };
         case TODO_ACTIONS.UPDATE_TODO_ERROR:
             return {
@@ -130,6 +130,7 @@ export function todoReducer (state, action){
             return {
                 ...state,
                 filterTerm: action.payload.filterTerm,
+                filterError: "",
             };
         case TODO_ACTIONS.CLEAR_ERROR:
             return {

@@ -1,21 +1,15 @@
 import './App.css'
 import TodosPage from './features/Todos/TodosPage'
 import Header from './shared/Header'
-import Logon from './features/Logon'
-import { useAuth } from './context/AuthContext.jsx'
+import AuthGate from './features/Auth/AuthGate'
 
  
 function App() {
-  const { isAuthenticated } = useAuth()
 
   return (
     <div>
       <Header />
-      { isAuthenticated ? (
-        <TodosPage />
-      ) : (
-        <Logon/>
-      )}
+      <AuthGate />
     </div>
   );
 }

@@ -18,7 +18,6 @@
     sortBy,
     sortDirection,
     filterTerm,
-    dataVersion,
     filterError,
   } = state;
 
@@ -170,7 +169,7 @@
           });
 
         if (response.status === 401) {
-          throw new Error ("unauthorized");
+          throw new Error ("Unauthorized");
         } 
         if (!response.ok){
           throw new Error('Failed to fetch todos');
@@ -180,7 +179,10 @@
         dispatch({ type: TODO_ACTIONS.FETCH_SUCCESS, payload: { todos: data.tasks } });
         
       } catch(error){
-        if (debouncedFilterTerm || sortBy !== 'createdAt' || sortDirection !== 'asc') {
+        const isFilterError = debouncedFilterTerm || sortBy !== 'createdAt' || sortDirection !== 'asc';
+        if (error.message === "Unauthorized") {
+          dispatch({ type: TODO_ACTIONS.FETCH_ERROR, payload: { error: "Session Expired. Please log in again.", filterError: "" } });
+        } else if (isFilterError) {
           dispatch({ type: TODO_ACTIONS.FETCH_ERROR, payload: { error: "",filterError: `Error filtering/sorting todos: ${error.message}` } });
         } else { 
           dispatch({ type: TODO_ACTIONS.FETCH_ERROR, payload: { error: `Error fetching todos: ${error.message}` , filterError: "" } });
@@ -212,7 +214,7 @@
       <SortBy sortBy={sortBy} sortDirection={sortDirection} onSortByChange={handleSortByChange} onSortDirectionChange={handleSortDirectionChange}/>
       <FilterInput filterTerm={filterTerm} onFilterChange={handleFilterChange}/>
       <TodoForm onAddTodo={addTodo }/>
-      <TodoList todoList={todoList} onCompleteTodo={completeTodo} onUpdateTodo={updateTodo} dataVersion={dataVersion}/>
+      <TodoList todoList={todoList} onCompleteTodo={completeTodo} onUpdateTodo={updateTodo} />
     </div>
   )
 }
