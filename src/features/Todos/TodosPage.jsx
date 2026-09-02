@@ -5,8 +5,10 @@
  import useDebounce from '../../utils/useDebounce';
  import FilterInput from '../../shared/FilterInput';
  import { todoReducer, initialTodoState, TODO_ACTIONS } from '../../reducers/todoReducer';
+ import { useAuth } from '../../context/AuthContext.jsx'
  
- function TodosPage({ token }){
+ function TodosPage(){
+  const { token } = useAuth();
 
   const [state, dispatch] = useReducer(todoReducer, initialTodoState);
   const {
