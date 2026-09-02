@@ -15,8 +15,8 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
 
-  const [email, setEmail] = useState('');
-  const [token, setToken] = useState('');
+  const [email, setEmail] = useState(() => localStorage.getItem('email') || '');
+  const [token, setToken] = useState(() => localStorage.getItem('token') || '');
   
   const login = async (userEmail, password) => {
   try {
@@ -31,12 +31,12 @@ export function AuthProvider({ children }) {
     const data = await res.json();
     
     if (res.status === 200 && data.name && data.csrfToken) {
-      // Success: Update state
       setEmail(data.name);
       setToken(data.csrfToken);
+      localStorage.setItem('email', data.name);
+      localStorage.setItem('token', data.csrfToken);
       return { success: true };
     } else {
-      // Failure: Return error
       return {
         success: false,
         error: `Authentication failed: ${data?.message}`,
@@ -51,6 +51,13 @@ export function AuthProvider({ children }) {
 };
 
 const logout = async () => {
+  if(!token){
+    setEmail('');
+    setToken('');
+    localStorage.removeItem('email');
+    localStorage.removeItem('token');
+    return { success: true };
+  }
   try {
     const res = await fetch('/api/users/logoff', {
       method: 'POST',
@@ -58,28 +65,25 @@ const logout = async () => {
       headers: {
         'Content-Type': 'application/json',
         ...(token && {
-          'X-CSRF-TOKEN': token,
-        }),
+          'X-CSRF-TOKEN': token,}),
       },
     });
 
-    if (res.status === 200) {
-      setEmail('');
-      setToken('');
-
-      return { success: true };
-    }
     setEmail('');
     setToken('');
+    localStorage.removeItem('email');
+    localStorage.removeItem('token');
 
-    return {
-      success: false,
-      error: 'Logout failed',
-    };
+    if (res.status === 200) {
+      return { success: true };
+    }
+    return { success: false, error: 'Logout failed'};
 
   } catch (error) {
     setEmail('');
     setToken('');
+    localStorage.removeItem('email');
+    localStorage.removeItem('token');
 
     return {
       success: false,

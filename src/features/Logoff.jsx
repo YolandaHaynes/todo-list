@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAuth } from '../context/AuthContext.jsx';
+import { useAuth } from '../contexts/AuthContext.jsx';
 
 function Logoff() {
   const { logout } = useAuth();
@@ -22,6 +22,7 @@ function Logoff() {
     } finally {
       setIsLoggingOff(false);
     }
+}
 
   return (
     <div>
@@ -36,7 +37,6 @@ function Logoff() {
       </button>
     </div>
   );
-}
 }
 
 export default Logoff;

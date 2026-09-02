@@ -1,4 +1,4 @@
-import { useAuth } from '../context/AuthContext.jsx'
+import { useAuth } from '../contexts/AuthContext.jsx'
 import Logoff from '../features/Logoff.jsx'
 
 function Header ( ){

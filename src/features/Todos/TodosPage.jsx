@@ -5,7 +5,7 @@
  import useDebounce from '../../utils/useDebounce';
  import FilterInput from '../../shared/FilterInput';
  import { todoReducer, initialTodoState, TODO_ACTIONS } from '../../reducers/todoReducer';
- import { useAuth } from '../../context/AuthContext.jsx'
+import { useAuth } from '../../contexts/AuthContext.jsx'
  
  function TodosPage(){
   const { token } = useAuth();
@@ -18,6 +18,7 @@
     sortBy,
     sortDirection,
     filterTerm,
+    dataVersion,
     filterError,
   } = state;
 
@@ -169,7 +170,7 @@
           });
 
         if (response.status === 401) {
-          throw new Error ("Unauthorized");
+          throw new Error ("unauthorized");
         } 
         if (!response.ok){
           throw new Error('Failed to fetch todos');
@@ -180,12 +181,13 @@
         
       } catch(error){
         const isFilterError = debouncedFilterTerm || sortBy !== 'createdAt' || sortDirection !== 'asc';
-        if (error.message === "Unauthorized") {
-          dispatch({ type: TODO_ACTIONS.FETCH_ERROR, payload: { error: "Session Expired. Please log in again.", filterError: "" } });
+
+        if (error.message === "unauthorized") {
+          dispatch({ type: TODO_ACTIONS.FETCH_ERROR, payload: { message: "Session Expired. Please log in again.", errorType: "auth" } });
         } else if (isFilterError) {
-          dispatch({ type: TODO_ACTIONS.FETCH_ERROR, payload: { error: "",filterError: `Error filtering/sorting todos: ${error.message}` } });
-        } else { 
-          dispatch({ type: TODO_ACTIONS.FETCH_ERROR, payload: { error: `Error fetching todos: ${error.message}` , filterError: "" } });
+          dispatch({ type: TODO_ACTIONS.FETCH_ERROR, payload: { message: `Error filtering/sorting todos: ${error.message}`, errorType: "filter" } });
+        } else {
+          dispatch({ type: TODO_ACTIONS.FETCH_ERROR, payload: { message: `Error fetching todos: ${error.message}`, errorType: "general" } });
         }
       }
     }
@@ -214,7 +216,7 @@
       <SortBy sortBy={sortBy} sortDirection={sortDirection} onSortByChange={handleSortByChange} onSortDirectionChange={handleSortDirectionChange}/>
       <FilterInput filterTerm={filterTerm} onFilterChange={handleFilterChange}/>
       <TodoForm onAddTodo={addTodo }/>
-      <TodoList todoList={todoList} onCompleteTodo={completeTodo} onUpdateTodo={updateTodo} />
+      <TodoList todoList={todoList} onCompleteTodo={completeTodo} onUpdateTodo={updateTodo} dataVersion={dataVersion}/>
     </div>
   )
 }
