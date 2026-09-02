@@ -54,7 +54,7 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo }) {
                 onChange={()=> onCompleteTodo(todo.id)}
               />
            </label>
-           <span onClick={() => {handleStartEditing}}> {todo.title} </span>
+           <span onClick={handleStartEditing}> {todo.title} </span>
           </>
         )}
       </form>
