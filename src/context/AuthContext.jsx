@@ -50,37 +50,43 @@ export function AuthProvider({ children }) {
   }
 };
 
-    const logout = async () => {
-    try {
-      const res =await fetch('/api/users/logoff', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token && {
-            'X-CSRF-Token': token,
-          }),
-        },
-      });
-      if (res.status === 200) {
-      return { success: true };
-    } else {
-      return {
-        success: false,
-        error: `Logout failed`,
-      };
-    }
-    } catch (error) {
-        return{
-            success: false,
-            error: `Network error during logout`,
-        };
-    } finally {
+const logout = async () => {
+  try {
+    const res = await fetch('/api/users/logoff', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && {
+          'X-CSRF-Token': token,
+        }),
+      },
+    });
+
+    if (res.status === 200) {
       setEmail('');
       setToken('');
-    }
-  };
 
+      return { success: true };
+    }
+    setEmail('');
+    setToken('');
+
+    return {
+      success: false,
+      error: 'Logout failed',
+    };
+
+  } catch (error) {
+    setEmail('');
+    setToken('');
+
+    return {
+      success: false,
+      error: 'Network error during logout',
+    };
+  }
+};
 
   const value = {
     email,

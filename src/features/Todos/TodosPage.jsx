@@ -180,7 +180,7 @@
         dispatch({ type: TODO_ACTIONS.FETCH_SUCCESS, payload: data.tasks });
         
       } catch(error){
-        if (debouncedFilterTerm || sortBy !== 'createdAt' || sortDirection !== 'desc') {
+        if (debouncedFilterTerm || sortBy !== 'createdAt' || sortDirection !== 'asc') {
           dispatch({ type: TODO_ACTIONS.FETCH_ERROR, payload: { error: "",filterError: `Error filtering/sorting todos: ${error.message}` } });
         } else { 
           dispatch({ type: TODO_ACTIONS.FETCH_ERROR, payload: { error: `Error fetching todos: ${error.message}` , filterError: "" } });
