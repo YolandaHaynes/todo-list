@@ -47,7 +47,7 @@ export function todoReducer (state, action){
             return {
                 ...state,
                 isTodoListLoading: false,
-                todoList: action.payload,
+                todoList: action.payload.todos,
                 error: "",
                 filterError: "",
             };
@@ -146,7 +146,7 @@ export function todoReducer (state, action){
                 ...state,
                 filterTerm: "",
                 sortBy: 'createdAt',
-                sortDirection: 'desc',
+                sortDirection: 'asc',
                 filterError: "",
             };  
         default:

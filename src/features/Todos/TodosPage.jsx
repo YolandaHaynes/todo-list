@@ -177,7 +177,7 @@
         }
           
         const data = await response.json()
-        dispatch({ type: TODO_ACTIONS.FETCH_SUCCESS, payload: data.tasks });
+        dispatch({ type: TODO_ACTIONS.FETCH_SUCCESS, payload: { todos: data.tasks } });
         
       } catch(error){
         if (debouncedFilterTerm || sortBy !== 'createdAt' || sortDirection !== 'asc') {
