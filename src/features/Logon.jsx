@@ -20,20 +20,13 @@ function Logon (){
         
         setIsLoggingOn(true);
 
-        try{ 
-            const result= await login(email,password);
+        const result= await login(email,password);
 
-            if(!result.success){
-                setAuthError(result.error);
-            } else {
-                setAuthError("")
-            }
-        } catch (error){
-            setAuthError("An error occurred during login.");
-        } finally {
+        if(!result.success){
+            setAuthError(result.error);
+        }
             setIsLoggingOn(false);
         }
-    }
 
     return (
         <form onSubmit={handleSubmit}>

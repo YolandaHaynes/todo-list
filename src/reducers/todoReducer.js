@@ -147,6 +147,7 @@ export function todoReducer (state, action){
                 filterTerm: "",
                 sortBy: 'createdAt',
                 sortDirection: 'asc',
+                error:"",
                 filterError: "",
             };  
         default:

@@ -12,18 +12,13 @@ function Logoff() {
     setLogoutError('');
     setIsLoggingOff(true);
 
-    try {
-      const result = await logout();
+    const result = await logout();
 
-      if (!result.success) {
+    if (!result.success) {
         setLogoutError(result.error);
       }
-    } catch (error) {
-      setLogoutError('Unexpected error during logout');
-    } finally {
       setIsLoggingOff(false);
     }
-  }
 
   return (
     <div>

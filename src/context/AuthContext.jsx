@@ -58,7 +58,7 @@ const logout = async () => {
       headers: {
         'Content-Type': 'application/json',
         ...(token && {
-          'X-CSRF-Token': token,
+          'X-CSRF-TOKEN': token,
         }),
       },
     });
