@@ -194,7 +194,7 @@ import { useAuth } from '../../contexts/AuthContext.jsx'
     if(token){
       fetchTodos()
     }
-  }, [token, sortBy, sortDirection, debouncedFilterTerm]);
+  }, [token, sortBy, sortDirection, debouncedFilterTerm, dataVersion]);
 
 
     return (
