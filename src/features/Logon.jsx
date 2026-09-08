@@ -1,11 +1,10 @@
 import { useState } from 'react'
+import { useAuth } from '../contexts/AuthContext.jsx' 
 
 
+function Logon (){
 
-function Logon ({
-    onSetEmail,
-    onSetToken
-}){
+    const { login } = useAuth();
 
 
     const [email, setEmail] = useState("")
@@ -15,28 +14,21 @@ function Logon ({
 
     async function handleSubmit(event){
         event.preventDefault();
+
+        setAuthError("");
         
         setIsLoggingOn(true);
 
-        try{ 
-            const response = await fetch('/api/users/logon', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({ email, password })
-            });
-            const data = await response.json();
-                if (response.status === 200 && data.name && data.csrfToken) {
-                    onSetEmail(data.name);
-                    onSetToken(data.csrfToken);
-                } else {
-                    setAuthError(`Authentication failed: ${data?.message}`);
-                }
-            } catch (error) {
-                setAuthError(`Error: ${error.name} | ${error.message}`);
-                } finally {
-                setIsLoggingOn(false);
-                }
+        try {
+          const result= await login(email,password);  
+          if(!result.success){
+            setAuthError(result.error);
+          }
+        } catch (error) {
+            setAuthError("An unexpected error occurred during login.");
+        } finally { 
+            setIsLoggingOn(false);
+        }
     }
 
     return (
@@ -65,8 +57,6 @@ function Logon ({
             </button>
       </form>
     );
-
-
 }
 
 export default Logon;
