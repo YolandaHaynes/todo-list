@@ -18,9 +18,10 @@ function Logoff() {
     if (result.success) {
       navigate('/login');
     } else{
-      setError(result.error);
+      setLogoutError(result.error);
       setIsLoggingOff(false);
-    }}
+    }
+  }
 
   return (
     <div>

@@ -60,7 +60,7 @@ function ProfilePage() {
 
   return (
     <main>
-      <h1>Profile Page</h1>
+      <h1>{user}'s Profile Page</h1>
 
       {loading && <p>Loading statistics...</p>}
 
