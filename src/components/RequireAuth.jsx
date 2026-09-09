@@ -4,6 +4,8 @@ import { useEffect } from 'react';
 
 function RequireAuth({ children }) {
   const { isAuthenticated } = useAuth();
+  console.log('RequireAuth render, isAuthenticated:', isAuthenticated);
+
   const location = useLocation();
   const navigate = useNavigate();
 

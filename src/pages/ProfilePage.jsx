@@ -30,20 +30,38 @@ function ProfilePage() {
             credentials: 'include',
         };
 
-        const response = await fetch('/api/tasks?limit=100', options);
+        const firstResponse = await fetch('/api/tasks', options);
 
-        if (response.status === 401) {
+        if (firstResponse.status === 401) {
             throw new Error('Unauthorized');
         }
 
-        if (!response.ok) {
+
+        if (!firstResponse.ok) {
             throw new Error('Failed to fetch todo');
         }
+        
+        const firstData = await firstResponse.json();
+        let allTasks = [...firstData.tasks];
+        const totalPages = firstData.pagination.pages;
 
-        const data = await response.json();
-        const todos = data.tasks;
-        const total = todos.length;
-        const completed = todos.filter((todo) => todo.isCompleted).length;
+        for (let page = 2; page <= totalPages; page++) {
+          const pageResponse = await fetch(`/api/tasks?page=${page}`, options);
+
+          if (pageResponse.status === 401) {
+            throw new Error('Unauthorized');
+          }
+          if (!pageResponse.ok) {
+            throw new Error('Failed to fetch todo');
+          }
+
+        const pageData = await pageResponse.json();
+        allTasks = allTasks.concat(pageData.tasks);
+        }
+
+
+        const total = firstData.pagination.total;
+        const completed = allTasks.filter((todo) => todo.isCompleted).length;
         const active = total - completed;
 
         setTodoStats({ total, completed, active});
@@ -65,10 +83,14 @@ function ProfilePage() {
       {loading && <p>Loading statistics...</p>}
 
       {error && <p>{error}</p>}
-
+      
+      <p>Status: {token ? 'Logged in' : 'Logged out'}</p>
       <p>Total todos: {todoStats.total}</p>
       <p>Completed todos: {todoStats.completed}</p>
       <p>Active todos: {todoStats.active}</p>
+    {todoStats.total > 0 && (
+        <p>Completion: {Math.round((todoStats.completed / todoStats.total) * 100)}%</p>
+        )}
     </main>
   );
 }
