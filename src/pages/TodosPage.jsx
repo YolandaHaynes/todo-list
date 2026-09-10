@@ -1,16 +1,20 @@
+ import { useSearchParams } from 'react-router';
+ import StatusFilter from '../shared/StatusFilter';
  import { useEffect, useReducer } from 'react';
- import TodoForm from './TodoForm'
- import TodoList from './TodoList/TodoList'
- import SortBy from '../../shared/SortBy'
- import useDebounce from '../../utils/useDebounce';
- import FilterInput from '../../shared/FilterInput';
- import { todoReducer, initialTodoState, TODO_ACTIONS } from '../../reducers/todoReducer';
-import { useAuth } from '../../contexts/AuthContext.jsx'
+ import TodoForm from '../features/Todos/TodoForm'
+ import TodoList from '../features/Todos/TodoList/TodoList'
+ import SortBy from '../shared/SortBy'
+ import useDebounce from '../utils/useDebounce';
+ import FilterInput from '../shared/FilterInput';
+ import { todoReducer, initialTodoState, TODO_ACTIONS } from '../reducers/todoReducer';
+ import { useAuth } from '../contexts/AuthContext';
+
  
  function TodosPage(){
   const { token } = useAuth();
-
+  const [searchParams] = useSearchParams();
   const [state, dispatch] = useReducer(todoReducer, initialTodoState);
+  const statusFilter = searchParams.get('status') || 'all';
   const {
     todoList,
     error,
@@ -128,7 +132,7 @@ import { useAuth } from '../../contexts/AuthContext.jsx'
           'X-CSRF-TOKEN': token,
         },
         credentials: 'include',
-        body: JSON.stringify({ isCompleted: true }),
+        body: JSON.stringify({ isCompleted: !originalTodo.isCompleted }),
       });
 
       if (response.status === 401) {
@@ -214,9 +218,10 @@ import { useAuth } from '../../contexts/AuthContext.jsx'
         )}
       {isTodoListLoading && <p>Loading todos.....</p>}
       <SortBy sortBy={sortBy} sortDirection={sortDirection} onSortByChange={handleSortByChange} onSortDirectionChange={handleSortDirectionChange}/>
+      <StatusFilter />
       <FilterInput filterTerm={filterTerm} onFilterChange={handleFilterChange}/>
       <TodoForm onAddTodo={addTodo }/>
-      <TodoList todoList={todoList} onCompleteTodo={completeTodo} onUpdateTodo={updateTodo} dataVersion={dataVersion}/>
+      <TodoList todoList={todoList} onCompleteTodo={completeTodo} onUpdateTodo={updateTodo} dataVersion={dataVersion} statusFilter={statusFilter}/>
     </div>
   )
 }

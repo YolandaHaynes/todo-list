@@ -15,7 +15,7 @@ export function useAuth() {
 
 export function AuthProvider({ children }) {
 
-  const [email, setEmail] = useState(() => localStorage.getItem('email') || '');
+  const [user, setUser] = useState(() => localStorage.getItem('user') || '');
   const [token, setToken] = useState(() => localStorage.getItem('token') || '');
   
   const login = async (userEmail, password) => {
@@ -31,9 +31,9 @@ export function AuthProvider({ children }) {
     const data = await res.json();
     
     if (res.status === 200 && data.name && data.csrfToken) {
-      setEmail(data.name);
+      setUser(data.name);
       setToken(data.csrfToken);
-      localStorage.setItem('email', data.name);
+      localStorage.setItem('user', data.name);
       localStorage.setItem('token', data.csrfToken);
       return { success: true };
     } else {
@@ -52,9 +52,9 @@ export function AuthProvider({ children }) {
 
 const logout = async () => {
   if(!token){
-    setEmail('');
+    setUser('');
     setToken('');
-    localStorage.removeItem('email');
+    localStorage.removeItem('user');
     localStorage.removeItem('token');
     return { success: true };
   }
@@ -69,9 +69,9 @@ const logout = async () => {
       },
     });
 
-    setEmail('');
+    setUser('');
     setToken('');
-    localStorage.removeItem('email');
+    localStorage.removeItem('user');
     localStorage.removeItem('token');
 
     if (res.status === 200) {
@@ -80,9 +80,9 @@ const logout = async () => {
     return { success: false, error: 'Logout failed'};
 
   } catch (error) {
-    setEmail('');
+    setUser('');
     setToken('');
-    localStorage.removeItem('email');
+    localStorage.removeItem('user');
     localStorage.removeItem('token');
 
     return {
@@ -93,7 +93,7 @@ const logout = async () => {
 };
 
   const value = {
-    email,
+    user,
     token,
     isAuthenticated: !!token,
     login,
