@@ -18,7 +18,7 @@ function LoginPage() {
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      return null;
+    navigate(from, { replace: true });
     }
   }, [isAuthenticated, navigate, from]);
 
