@@ -36,7 +36,7 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo, onDeleteTodo }) {
   return (
     <li className={`todo-item ${todo.isCompleted ? "completed" : ""}`}>
       {isEditing ? (
-        <form onSubmit={handleUpdate}>
+        <form className="edit-todo-form" onSubmit={handleUpdate}>
           <TextInputWithLabel
             elementId={`todoTitle${todo.id}`}
             labelText="Todo"
@@ -45,12 +45,20 @@ function TodoListItem({ todo, onCompleteTodo, onUpdateTodo, onDeleteTodo }) {
             onChange={handleEdit}
             maxLength={100}
           />
-          <button type="button" onClick={handleCancel}>
+          <button 
+          type="button" 
+          className="secondary-button"
+          onClick={handleCancel}>
             Cancel
           </button>
-          <button type="submit" disabled={!isValidTodoTitle(workingTitle)}>
+
+          <button 
+          type="submit" 
+          className="primary-button"
+          disabled={!isValidTodoTitle(workingTitle)}>
             Update
           </button>
+
         </form>
       ) : (
         <div className="todo-item-content">

@@ -2,10 +2,6 @@
 
 A responsive Todo application built with React that allows users to create, manage, search, sort, and filter their tasks. The application includes user authentication, protected routes, form validation, and responsive styling for desktop, tablet, and mobile screens.
 
-## Live Demo
-
-[Live Demo](linktodemo)
-
 ## Features
 
 - User login and authentication
@@ -136,5 +132,3 @@ This project is licensed under the MIT License.
 GitHub: 
 
 [Github](https://github.com/YolandaHaynes/todo-list)
-
-[Portfolio] (link)

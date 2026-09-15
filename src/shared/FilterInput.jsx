@@ -1,4 +1,5 @@
 function FilterInput ({filterTerm, onFilterChange}){
+    
     return(
         <div>
             <label htmlFor="filterInput">Search:</label>
@@ -8,9 +9,10 @@ function FilterInput ({filterTerm, onFilterChange}){
                 value={filterTerm}
                 onChange= {(event) => onFilterChange(event.target.value)}
                 placeholder='Search by title...'
+                maxLength={100}
             />
         </div>
     )
 }
 
-export default FilterInput
+export default FilterInput;

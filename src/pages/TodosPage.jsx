@@ -299,6 +299,8 @@ function TodosPage() {
           <div className="error-state" role="alert">
             <p>{error}</p>
             <button
+              type="button"
+              className="secondary-button"
               onClick={() => dispatch({ type: TODO_ACTIONS.CLEAR_ERROR })}
             >
               Clear Error
