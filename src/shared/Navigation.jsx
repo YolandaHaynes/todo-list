@@ -10,8 +10,8 @@ function Navigation() {
   });
 
   return (
-    <nav>
-      <ul
+    <nav aria-label="Main navigation">
+      <ul className="navigation-list"
         style={{
           listStyle: 'none',
           display: 'flex',
@@ -20,7 +20,9 @@ function Navigation() {
         }}
       >
         <li>
-          <NavLink to="/about" style={navLinkStyle}>
+          <NavLink to="/about" 
+            className={({isActive}) => isActive ? 'navigation-link active' : 'navigation-link'}
+          >
             About
           </NavLink>
         </li>
@@ -28,20 +30,26 @@ function Navigation() {
         {isAuthenticated ? (
           <>
             <li>
-              <NavLink to="/todos" style={navLinkStyle}>
+              <NavLink to="/todos" 
+              className={({isActive}) => isActive ? 'navigation-link active' : 'navigation-link'}
+              >
                 Todos
               </NavLink>
             </li>
 
             <li>
-              <NavLink to="/profile" style={navLinkStyle}>
+              <NavLink to="/profile"
+              className={({isActive}) => isActive ? 'navigation-link active' : 'navigation-link'}
+              >
                 Profile
               </NavLink>
             </li>
           </>
         ) : (
           <li>
-            <NavLink to="/login" style={navLinkStyle}>
+            <NavLink to="/login" 
+            className={({isActive}) => isActive ? 'navigation-link active' : 'navigation-link'}
+            >
               Login
             </NavLink>
           </li>

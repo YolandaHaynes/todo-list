@@ -44,26 +44,30 @@ function LoginPage() {
     }
   }
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="login-form"  onSubmit={handleSubmit} aria-label="Login Form">
       {authError && <p>{authError}</p>}
-      <label htmlFor="email">Email</label>
-      <input
-        type="email"
-        id="email"
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-        required
-      />
+      <div className="login-field">
+        <label htmlFor="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+          required
+        />        
+      </div>
 
-      <label htmlFor="password">Password</label>
-      <input
-        type="password"
-        id="password"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-        required
-      />
-
+      <div className="login-field">
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          required
+        />
+      </div>
+      
       <button type="submit" disabled={isLoggingOn}>
         {isLoggingOn ? "Logging in..." : "Log On"}
       </button>

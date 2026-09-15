@@ -77,20 +77,22 @@ function ProfilePage() {
 
 
   return (
-    <main>
-      <h1>{user}'s Profile Page</h1>
+    <main className="page-container">
+      <section className="page-card">
+        <h1>{user}'s Profile Page</h1>
 
-      {loading && <p>Loading statistics...</p>}
+        {loading && <p>Loading statistics...</p>}
 
-      {error && <p>{error}</p>}
-      
-      <p>Status: {token ? 'Logged in' : 'Logged out'}</p>
-      <p>Total todos: {todoStats.total}</p>
-      <p>Completed todos: {todoStats.completed}</p>
-      <p>Active todos: {todoStats.active}</p>
-    {todoStats.total > 0 && (
-        <p>Completion: {Math.round((todoStats.completed / todoStats.total) * 100)}%</p>
-        )}
+        {error && <p>{error}</p>}
+        
+        <p>Status: {token ? 'Logged in' : 'Logged out'}</p>
+        <p>Total todos: {todoStats.total}</p>
+        <p>Completed todos: {todoStats.completed}</p>
+        <p>Active todos: {todoStats.active}</p>
+      {todoStats.total > 0 && (
+          <p>Completion: {Math.round((todoStats.completed / todoStats.total) * 100)}%</p>
+          )}
+    </section>
     </main>
   );
 }

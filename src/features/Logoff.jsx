@@ -29,6 +29,7 @@ function Logoff() {
 
       <button
         type="button"
+        className="logout-button"
         onClick={handleLogout}
         disabled={isLoggingOff}
       >

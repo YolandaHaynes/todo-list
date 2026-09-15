@@ -8,11 +8,13 @@ function Header(){
 
 
     return (
-        <div>
-            <h1>Todo List</h1>
-            <Navigation />
-            {isAuthenticated && <Logoff />}
-        </div>
+        <header className="app-header">
+            <div className="header-content">
+                <h1 className="app-title">Todo List</h1>
+                <Navigation />
+                {isAuthenticated && <Logoff />}
+            </div> 
+        </header>
   );
 }
   
