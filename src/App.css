@@ -349,10 +349,6 @@ select:focus-visible {
   background-color: var(--secondary-color);
 }
 
-/* .primary-button:active:not(:disabled) {
-  transform: translateY(1px);
-} */
-
 .primary-button:disabled {
   background-color: #9ca3af;
 }
