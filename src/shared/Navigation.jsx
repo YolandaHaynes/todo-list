@@ -4,21 +4,9 @@ import { useAuth } from '../contexts/AuthContext';
 function Navigation() {
   const { isAuthenticated } = useAuth();
 
-  const navLinkStyle = ({ isActive }) => ({
-    fontWeight: isActive ? 'bold' : 'normal',
-    textDecoration: isActive ? 'underline' : 'none',
-  });
-
   return (
     <nav aria-label="Main navigation">
-      <ul className="navigation-list"
-        style={{
-          listStyle: 'none',
-          display: 'flex',
-          gap: '1rem',
-          padding: 0,
-        }}
-      >
+      <ul className="navigation-list">
         <li>
           <NavLink to="/about" 
             className={({isActive}) => isActive ? 'navigation-link active' : 'navigation-link'}

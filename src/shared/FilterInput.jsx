@@ -1,7 +1,7 @@
 function FilterInput ({filterTerm, onFilterChange}){
     
     return(
-        <div>
+        <div className="todo-control-group">
             <label htmlFor="filterInput">Search:</label>
             <input 
                 id='filterInput'

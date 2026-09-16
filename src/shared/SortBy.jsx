@@ -1,6 +1,6 @@
 function SortBy({sortBy, sortDirection, onSortByChange, onSortDirectionChange}){
     return(
-        <div>
+        <div className="todo-control-group">
             <label htmlFor="sortBy">Sort by</label>
               <select
                 id='sortBy'

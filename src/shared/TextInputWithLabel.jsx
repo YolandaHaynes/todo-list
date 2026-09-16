@@ -9,7 +9,7 @@ function TextInputWithLabel({
 }) {
   return (
     <>
-      <label className="visually-hidden"htmlFor={elementId}>{labelText}</label>
+      <label className="visually-hidden" htmlFor={elementId}>{labelText}</label>
       <input
         type="text"
         id={elementId}

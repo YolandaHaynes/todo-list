@@ -45,7 +45,7 @@ function LoginPage() {
   }
   return (
     <form className="login-form"  onSubmit={handleSubmit} aria-label="Login Form">
-      {authError && <p>{authError}</p>}
+      {authError && <p className="error-message" role="alert">{authError}</p>}
       <div className="login-field">
         <label htmlFor="email">Email</label>
         <input

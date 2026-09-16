@@ -256,6 +256,12 @@ select:focus-visible {
   color: var(--primary-color);
 }
 
+.todo-control-group {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
 /* Todo controls */
 
 .todo-controls {

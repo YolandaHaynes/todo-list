@@ -2,6 +2,10 @@
 
 A responsive Todo application built with React that allows users to create, manage, search, sort, and filter their tasks. The application includes user authentication, protected routes, form validation, and responsive styling for desktop, tablet, and mobile screens.
 
+## Live Demo
+
+[Live Demo](https://todo-list-sable-alpha-70.vercel.app/)
+
 ## Features
 
 - User login and authentication
@@ -104,7 +108,7 @@ Creates a production build of the application.
 
 Previews the production build locally.
 
-### Deisgn Decisions
+### Design Decisions
 The application uses a simple CSS-based styling approach to keep the project lightweight and easy to maintain.
 
 CSS custom properties were used for common colors so the application's color palette can be updated consistently throughout the stylesheet.
@@ -131,4 +135,5 @@ This project is licensed under the MIT License.
 
 GitHub: 
 
-[Github](https://github.com/YolandaHaynes/todo-list)
+[Github] (https://github.com/YolandaHaynes)
+[Portfolio](https://github.com/YolandaHaynes/todo-list)
