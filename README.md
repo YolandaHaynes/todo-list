@@ -136,4 +136,3 @@ This project is licensed under the MIT License.
 GitHub: 
 
 [Github](https://github.com/YolandaHaynes)
-[Portfolio](https://github.com/YolandaHaynes/todo-list)
