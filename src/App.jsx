@@ -16,7 +16,8 @@ function App() {
   return (
     <div>
       <Header />
-      <Routes>
+      <main className="app-container">
+        <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
@@ -24,6 +25,7 @@ function App() {
         <Route path="/todos" element={<RequireAuth><TodosPage /></RequireAuth>} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      </main>
     </div>
   );
 }

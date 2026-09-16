@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useEffect, useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
 
 function ProfilePage() {
   const { user, token } = useAuth();
@@ -11,36 +11,34 @@ function ProfilePage() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
-
-    useEffect(() => {
+  useEffect(() => {
     async function fetchTodoStats() {
-        if (!token) return;
+      if (!token) return;
 
-        try {
+      try {
         setLoading(true);
-        setError('');
+        setError("");
 
         const options = {
-            method: 'GET',
-            headers: {
-            'X-CSRF-TOKEN': token,
-            },
-            credentials: 'include',
+          method: "GET",
+          headers: {
+            "X-CSRF-TOKEN": token,
+          },
+          credentials: "include",
         };
 
-        const firstResponse = await fetch('/api/tasks', options);
+        const firstResponse = await fetch("/api/tasks", options);
 
         if (firstResponse.status === 401) {
-            throw new Error('Unauthorized');
+          throw new Error("Unauthorized");
         }
-
 
         if (!firstResponse.ok) {
-            throw new Error('Failed to fetch todo');
+          throw new Error("Failed to fetch todo");
         }
-        
+
         const firstData = await firstResponse.json();
         let allTasks = [...firstData.tasks];
         const totalPages = firstData.pagination.pages;
@@ -49,48 +47,51 @@ function ProfilePage() {
           const pageResponse = await fetch(`/api/tasks?page=${page}`, options);
 
           if (pageResponse.status === 401) {
-            throw new Error('Unauthorized');
+            throw new Error("Unauthorized");
           }
           if (!pageResponse.ok) {
-            throw new Error('Failed to fetch todo');
+            throw new Error("Failed to fetch todo");
           }
 
-        const pageData = await pageResponse.json();
-        allTasks = allTasks.concat(pageData.tasks);
+          const pageData = await pageResponse.json();
+          allTasks = allTasks.concat(pageData.tasks);
         }
-
 
         const total = firstData.pagination.total;
         const completed = allTasks.filter((todo) => todo.isCompleted).length;
         const active = total - completed;
 
-        setTodoStats({ total, completed, active});
-        }catch(error){
-            setError(`Error loading statistics: ${error.message}`);
-        }finally {
-            setLoading(false);
-        }
+        setTodoStats({ total, completed, active });
+      } catch (error) {
+        setError(`Error loading statistics: ${error.message}`);
+      } finally {
+        setLoading(false);
+      }
     }
 
     fetchTodoStats();
-    }, [token]);
-
+  }, [token]);
 
   return (
-    <main>
-      <h1>{user}'s Profile Page</h1>
+    <main className="page-container">
+      <section className="page-card">
+        <h1>{user}'s Profile Page</h1>
 
-      {loading && <p>Loading statistics...</p>}
+        {loading && <p>Loading statistics...</p>}
 
-      {error && <p>{error}</p>}
-      
-      <p>Status: {token ? 'Logged in' : 'Logged out'}</p>
-      <p>Total todos: {todoStats.total}</p>
-      <p>Completed todos: {todoStats.completed}</p>
-      <p>Active todos: {todoStats.active}</p>
-    {todoStats.total > 0 && (
-        <p>Completion: {Math.round((todoStats.completed / todoStats.total) * 100)}%</p>
+        {error && <p>{error}</p>}
+
+        <p>Status: {token ? "Logged in" : "Logged out"}</p>
+        <p>Total todos: {todoStats.total}</p>
+        <p>Completed todos: {todoStats.completed}</p>
+        <p>Active todos: {todoStats.active}</p>
+        {todoStats.total > 0 && (
+          <p>
+            Completion:{" "}
+            {Math.round((todoStats.completed / todoStats.total) * 100)}%
+          </p>
         )}
+      </section>
     </main>
   );
 }

@@ -15,7 +15,7 @@ function StatusFilter() {
   };
 
   return (
-    <div>
+    <div className="todo-control-group">
       <label htmlFor='statusFilter'>Show:</label>
       <select
         id='statusFilter'
@@ -23,8 +23,8 @@ function StatusFilter() {
         onChange={(e) => handleStatusChange(e.target.value)}
       >
         <option value='all'>All Todos</option>
-        <option value='active'>Active Todos</option>
-        <option value='completed'>Completed Todos</option>
+        <option value='active'>Active</option>
+        <option value='completed'>Completed</option>
       </select>
     </div>
   );

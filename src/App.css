@@ -1,0 +1,691 @@
+:root {
+  --primary-color: #246A73;
+  --secondary-color: #7149e1;
+  --header-color: #1d3c3b;
+
+  --background-color: #f4f6f8;
+  --card-color: #ffffff;
+  --text-color: #1f2937;
+
+  --muted-text-color: #4b5563;
+  --light-text-color: #6b7280;
+
+  --border-color: #dbd1da;
+  --input-border-color: #9ca3af;
+
+  --hover-background-color: #f3f4f6;
+
+  --error-color: #b91c1c;
+  --error-border-color: #fca5a5;
+  --error-background-color: #fef2f2;
+
+  --focus-color: #fbbf24;
+}
+
+/* Base styles */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Main layout */
+
+.app-container {
+  width: min(100% - 2rem, 1100px);
+  margin: 0 auto;
+  padding: 2rem 0;
+}
+
+/* Header */
+
+.app-header {
+  padding: 1rem 0;
+  background-color: var(--header-color);
+  color: white;
+}
+
+.header-content {
+  width: min(100% - 2rem, 1100px);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.app-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+/* Navigation */
+
+.navigation-list {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+.navigation-link {
+  display: inline-block;
+  padding: 0.65rem 1rem;
+  border-radius: 6px;
+  color: white;
+  transition: background-color 0.2s ease;
+}
+
+.navigation-link:hover {
+  background-color: #398ae6;
+}
+
+.navigation-link.active {
+  background-color: var(--primary-color);
+  font-weight: 700;
+}
+
+.navigation-link:focus-visible,
+.logout-button:focus-visible,
+.delete-button:focus-visible {
+  outline-color: var(--focus-color);
+}
+
+/*Login*/
+.login-form {
+  display: flex;
+  align-items: end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.login-field {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.login-field input {
+  min-height: 44px;
+  padding: 0.65rem;
+  border: 1px solid var(--input-border-color);
+  border-radius: 6px;
+}
+
+.login-form button {
+  min-height: 44px;
+  border-radius: 6px;
+}
+
+/* Logout */
+
+.logout-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logout-button {
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  border: 1px solid rgb(138, 154, 223);
+  border-radius: 6px;
+  background-color: rgb(153, 170, 244);
+  color: #292f30;
+  font-weight: 600;
+}
+
+.logout-button:hover:not(:disabled) {
+  background-color: #d9f7f7;
+  color: #000000;
+}
+
+.error-message {
+  color: var(--error-color);
+  font-size: 0.9rem;
+}
+
+/* Todos page */
+
+.page-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.todos-header {
+  margin-bottom: 2rem;
+}
+
+.todos-header h2 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+.todos-header > p {
+  color: var(--muted-text-color);
+}
+
+/* Shared card styling */
+
+.todo-controls,
+.todo-form-section,
+.todo-list-section {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background-color: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.todo-form-section h3,
+.todo-list-section h3 {
+  margin-top: 0;
+  margin-bottom:0.5rem;
+  color: var(--primary-color);
+}
+
+.todo-control-group {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Todo controls */
+
+.todo-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: nowrap;
+}
+
+.todo-controls > div {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.todo-controls select,
+.todo-controls input {
+  min-height: 44px;
+  padding: 0.5rem;
+  border: 1px solid var(--input-border-color);
+  border-radius: 6px;
+  background-color: var(--card-color);
+}
+
+
+.todo-controls > div:last-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.todo-controls > div:last-child input {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Loading */
+
+.loading-state {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  border-radius: 6px;
+  background-color: #eff6ff;
+  color: #1e40af;
+}
+
+/* Errors */
+
+.error-state {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--error-border-color);
+  border-radius: 6px;
+  background-color: var(--error-background-color);
+  color: #991b1b;
+}
+
+.error-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Buttons */
+
+.primary-button,
+.secondary-button,
+.edit-button,
+.delete-button {
+  min-height: 44px;
+  padding: 0.65rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.primary-button {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.primary-button:hover:not(:disabled) {
+  background-color: var(--secondary-color);
+}
+
+.primary-button:disabled {
+  background-color: #9ca3af;
+}
+
+.secondary-button {
+  border: 1px solid var(--input-border-color);
+  background-color: var(--card-color);
+  color: var(--text-color);
+}
+
+.secondary-button:hover {
+  background-color: var(--hover-background-color);
+  border-color: #6b7280;
+}
+
+.edit-button {
+  min-width: 70px;
+  border: 1px solid var(--primary-color);
+  background-color: var(--card-color);
+  color: var(--primary-color);
+}
+
+.edit-button:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.delete-button {
+  min-width: 70px;
+  border: 1px solid #dc2626;
+  background-color: var(--card-color);
+  color: #dc2626;
+}
+
+.delete-button:hover {
+  background-color: #dc2626;
+  color: white;
+}
+
+/* Todo form */
+
+.todo-form {
+  width: 100%;
+}
+
+.todo-input-group {
+  display: flex;
+  align-items: end;
+  gap: 0.75rem;
+}
+
+.todo-input-group label {
+  display: block;
+  flex: 1;
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.todo-input-group input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.65rem;
+  border: 1px solid var(--input-border-color);
+  border-radius: 6px;
+}
+
+.input-help {
+  margin-top: 0.4rem;
+  color: var(--light-text-color);
+  font-size: 0.85rem;
+}
+
+.validation-message {
+  margin-top: 0.5rem;
+  color: var(--error-color);
+  font-size: 0.9rem;
+}
+
+/* Todo list */
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.empty-state {
+  padding: 2rem 1rem;
+  text-align: center;
+  border: 1px dashed var(--border-color);
+  border-radius: 6px;
+  background-color: #f9fafb;
+  color: var(--light-text-color);
+}
+
+.todo-item {
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--card-color);
+  transition: box-shadow 0.2s ease;
+}
+
+.todo-item:hover {
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.todo-item-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.todo-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+}
+
+/* Custom checkbox */
+
+.todo-checkbox-label input {
+  position: absolute;
+  opacity: 0;
+}
+
+.custom-checkbox {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border: 2px solid var(--input-border-color);
+  border-radius: 4px;
+  background-color: var(--card-color);
+}
+
+.todo-checkbox-label input:checked + .custom-checkbox {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.todo-checkbox-label input:checked + .custom-checkbox::after {
+  content: "✓";
+  display: block;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 18px;
+  text-align: center;
+}
+
+.todo-checkbox-label input:focus-visible + .custom-checkbox {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.todo-title {
+  overflow-wrap: anywhere;
+}
+
+.todo-item.completed .todo-title {
+  color: var(--light-text-color);
+  text-decoration: line-through;
+}
+
+.todo-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Edit form */
+
+.edit-todo-form {
+  display: flex;
+  align-items: end;
+  gap: 0.75rem;
+}
+
+.edit-todo-form label {
+  flex: 1;
+}
+
+.edit-todo-form input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.65rem;
+  border: 1px solid var(--input-border-color);
+  border-radius: 6px;
+}
+
+/* About and Profile */
+
+.page-card {
+  padding: 1.5rem;
+  background-color: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.page-card h1 {
+  margin-top: 0;
+  color: var(--primary-color);
+}
+
+.about-section {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.about-section h2 {
+  margin-top: 0;
+  color: var(--primary-color);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .app-container {
+    width: min(100% - 1.5rem, 1100px);
+    padding: 1rem 0;
+  }
+
+  .header-content {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .app-title {
+    font-size: 1.5rem;
+  }
+
+  .navigation-list {
+    justify-content: center;
+  }
+
+  .navigation-link {
+    padding: 0.75rem 1rem;
+  }
+
+  .login-form,
+  .login-field {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .login-field input,
+  .login-form button {
+    width: 100%;
+  }
+
+  .logout-container {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .todos-header h2 {
+    font-size: 1.6rem;
+  }
+
+  .todo-controls,
+  .todo-form-section,
+  .todo-list-section {
+    padding: 1.25rem;
+  }
+
+  .todo-controls {
+    align-items: stretch;
+  }
+
+  .todo-input-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .primary-button,
+  .secondary-button {
+    width: 100%;
+  }
+
+  .error-actions {
+    flex-direction: column;
+  }
+
+  .todo-item-content {
+    align-items: flex-start;
+  }
+
+  .todo-checkbox-label {
+    align-items: flex-start;
+  }
+
+  .todo-actions {
+    flex-direction: column;
+  }
+
+  .todo-actions button {
+    width: 100%;
+  }
+
+  .edit-todo-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+}
+
+@media (max-width: 900px) {
+  .todo-controls {
+    flex-wrap: wrap;
+  }
+
+  .todo-controls > div:last-child {
+    flex-basis: 100%;
+  }
+
+  .todo-controls > div:last-child input {
+    width: 100%;
+  }
+}
